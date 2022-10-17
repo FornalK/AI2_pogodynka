@@ -1,3 +1,6 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+weather_in_city:
+  path: /weather/{country_name}/{city_name}
+  controller: App\Controller\WeatherController::cityAction
+  requirements:
+    country: a-zA-Z\xA1-\xFF+
+    city: a-zA-Z\xA1-\xFF+
