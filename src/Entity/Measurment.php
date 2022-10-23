@@ -35,12 +35,12 @@ class Measurment
         return $this->id;
     }
 
-    public function getCityId(): ?City
+    public function getCity(): ?City
     {
         return $this->city;
     }
 
-    public function setCityId(?City $city_id): self
+    public function setCity(?City $city_id): self
     {
         $this->city = $city_id;
 

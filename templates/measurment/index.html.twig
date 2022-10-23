@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Measurment index{% endblock %}
+
+{% block body %}
+    <h1>Measurment index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Temperature</th>
+                <th>Wind</th>
+                <th>Cloudiness_level</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for measurment in measurments %}
+            <tr>
+                <td>{{ measurment.id }}</td>
+                <td>{{ measurment.date ? measurment.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ measurment.temperature }}</td>
+                <td>{{ measurment.wind }}</td>
+                <td>{{ measurment.cloudinessLevel }}</td>
+                <td>
+                    <a href="{{ path('app_measurment_show', {'id': measurment.id}) }}">show</a>
+                    <a href="{{ path('app_measurment_edit', {'id': measurment.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_measurment_new') }}">Create new</a> </br>
+
+    <a href="{{ path('app_city_index') }}">Navigate to cities</a>
+{% endblock %}

@@ -1,0 +1,33 @@
+App\Entity\City:
+  properties:
+    longitude:
+      - Range:
+          min: -180
+          max: 180
+          groups: ['create', 'edit']
+    latitude:
+      - Range:
+          min: -90
+          max: 90
+          groups: ['create', 'edit']
+
+App\Entity\Measurment:
+  properties:
+    date:
+      - NotBlank: ~
+    temperature:
+      - Range:
+          min: -100
+          max: 100
+          groups: ['create', 'edit']
+      - NotBlank: ~
+    wind:
+      - Range:
+          min: 0
+          max: 999
+          groups: ['create', 'edit']
+    cloudiness_level:
+      - Range:
+          min: 0
+          max: 5
+          groups: ['create', 'edit']
