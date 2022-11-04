@@ -4,3 +4,7 @@ weather_in_city:
   requirements:
     country: a-zA-Z\xA1-\xFF+
     city: a-zA-Z\xA1-\xFF+
+  
+logout:
+  path: /logout
+  methods: GET

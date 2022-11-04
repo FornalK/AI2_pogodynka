@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Form\CityType;
 use App\Repository\CityRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,9 @@ class CityController extends AbstractController
         ]);
     }
 
+    /**
+     * @IsGranted("ROLE_CITY_CREATE")
+     */
     #[Route('/new', name: 'app_city_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CityRepository $cityRepository): Response
     {
@@ -50,6 +54,9 @@ class CityController extends AbstractController
         ]);
     }
 
+    /**
+     * @IsGranted("ROLE_CITY_EDIT")
+     */
     #[Route('/{id}/edit', name: 'app_city_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, City $city, CityRepository $cityRepository): Response
     {
@@ -70,6 +77,9 @@ class CityController extends AbstractController
         ]);
     }
 
+    /**
+     * @IsGranted("ROLE_CITY_DELETE")
+     */
     #[Route('/{id}', name: 'app_city_delete', methods: ['POST'])]
     public function delete(Request $request, City $city, CityRepository $cityRepository): Response
     {

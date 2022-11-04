@@ -26,7 +26,9 @@
                 <td>{{ city.longitude }}</td>
                 <td>
                     <a href="{{ path('app_city_show', {'id': city.id}) }}">show</a>
-                    <a href="{{ path('app_city_edit', {'id': city.id}) }}">edit</a>
+                    {% if is_granted('ROLE_CITY_EDIT') %}
+                        <a href="{{ path('app_city_edit', {'id': city.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -37,7 +39,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_city_new') }}">Create new</a> </br>
+    {% if is_granted('ROLE_CITY_CREATE') %}
+        <a href="{{ path('app_city_new') }}">Create new</a> </br>
+    {% endif %}
 
     <a href="{{ path('app_measurment_index') }}">Navigate to measurements</a>
 {% endblock %}

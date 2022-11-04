@@ -26,7 +26,9 @@
                 <td>{{ measurment.cloudinessLevel }}</td>
                 <td>
                     <a href="{{ path('app_measurment_show', {'id': measurment.id}) }}">show</a>
-                    <a href="{{ path('app_measurment_edit', {'id': measurment.id}) }}">edit</a>
+                    {% if is_granted('ROLE_MEASUREMENT_EDIT') %}
+                        <a href="{{ path('app_measurment_edit', {'id': measurment.id}) }}">edit</a>
+                    {% endif %} 
                 </td>
             </tr>
         {% else %}
@@ -37,7 +39,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_measurment_new') }}">Create new</a> </br>
+    {% if is_granted('ROLE_MEASUREMENT_CREATE') %}
+        <a href="{{ path('app_measurment_new') }}">Create new</a> </br>
+    {% endif %} 
 
     <a href="{{ path('app_city_index') }}">Navigate to cities</a>
 {% endblock %}

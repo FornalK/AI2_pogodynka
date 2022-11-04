@@ -32,7 +32,11 @@
 
     <a href="{{ path('app_measurment_index') }}">back to list</a>
 
-    <a href="{{ path('app_measurment_edit', {'id': measurment.id}) }}">edit</a>
+    {% if is_granted('ROLE_MEASUREMENT_EDIT') %}
+        <a href="{{ path('app_measurment_edit', {'id': measurment.id}) }}">edit</a>
+    {% endif %} 
 
-    {{ include('measurment/_delete_form.html.twig') }}
+    {% if is_granted('ROLE_MEASUREMENT_DELETE') %}
+        {{ include('measurment/_delete_form.html.twig') }}
+    {% endif %} 
 {% endblock %}
