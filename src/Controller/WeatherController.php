@@ -38,10 +38,10 @@ class WeatherController extends AbstractController
 
     public function cityAction(string $country_name,
                                string $city_name,
-                               MeasurmentRepository $measurementRepository,
-                               CityRepository $cityRepository,
                                WeatherUtil $weatherUtil): Response {
-        $cityAndMeasurements = $weatherUtil->getWeatherForCountryAndCity($country_name, $city_name, $cityRepository, $measurementRepository);
+
+        $cityAndMeasurements = $weatherUtil->getWeatherForCountryAndCity($country_name, $city_name);
+    
         return $this->render('weather/city.html.twig', [
             'city' => $cityAndMeasurements["city"],
             'measurements' => $cityAndMeasurements["measurements"]

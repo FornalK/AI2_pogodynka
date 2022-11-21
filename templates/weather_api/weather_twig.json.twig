@@ -1,0 +1,23 @@
+{
+    "query": {
+        "name": {{ locationName }}
+    },
+    "location": {
+        "id": {{ location.id }},
+        "name": {{ location.getCityName() }},
+        "country": {{ location.getCountryName() }},
+        "latitude": {{ location.latitude }},
+        "longitude": {{ location.longitude }}
+    },
+    "measurements": [
+        {% for measurement in measurements -%}
+            {
+                "date": {{ measurement.date|date('Y-m-d') }},
+                "celsius": {{ measurement.getTemperature() }},
+                "wind": {{ measurement.wind }},
+                "cloudiness level": {{ measurement.getCloudinessLevel() }},
+            }
+            {%- if not loop.last %},{% endif %}
+        {%- endfor %}
+    ]
+}

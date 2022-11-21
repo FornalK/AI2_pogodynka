@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Repository\CityRepository;
-use App\Repository\MeasurmentRepository;
 use App\Service\WeatherUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -21,16 +20,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class WeatherGetByLocationIdCommand extends Command
 {
     private CityRepository $cityRepository;
-    private MeasurmentRepository $measurmentRepository;
     private WeatherUtil $weatherUtil;
-    
-    public function __constructor(CityRepository $cityRepository, MeasurmentRepository $measurmentRepository, WeatherUtil $weatherUtil, string $name = null)
+
+    public function __construct(CityRepository $cityRepository, WeatherUtil $weatherUtil, string $name = null)
     {
         $this->cityRepository = $cityRepository;
-        $this->measurmentRepository = $measurmentRepository;
         $this->weatherUtil = $weatherUtil;
 
-        parent::__constructor($name);
+        parent::__construct($name);
     }
 
     protected function configure(): void
@@ -44,9 +41,17 @@ class WeatherGetByLocationIdCommand extends Command
     {
         $locationId = $input->getArgument('locationId');
         $city = $this->cityRepository->find($locationId);
-        $measurements = $this->weatherUtil->getWeatherForLocation($city, $this->measurmentRepository);
-
-        $output->writeln($measurements);
+        $cityAndMeasurements = $this->weatherUtil->getWeatherForLocation($city);
+        
+        $output->writeln("Country: " . $city->getCountryName());
+        $output->writeln("City: " . $city->getCityName());
+        foreach($cityAndMeasurements["measurements"] as $measurement) {
+            $output->writeln("Date: " . json_encode($measurement->getDate()));
+            $output->writeln("Temperature: " . $measurement->getTemperature());
+            $output->writeln("Wind: " . $measurement->getWind());
+            $output->writeln("Cloudiness Level: " . $measurement->getCloudinessLevel());
+            $output->writeln("");
+        }
 
         return Command::SUCCESS;
     }

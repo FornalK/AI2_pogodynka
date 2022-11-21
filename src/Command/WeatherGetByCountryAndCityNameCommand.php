@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\WeatherUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,17 +17,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class WeatherGetByCountryAndCityNameCommand extends Command
 {
-    private CityRepository $cityRepository;
-    private MeasurmentRepository $measurmentRepository;
     private WeatherUtil $weatherUtil;
     
-    public function __constructor(CityRepository $cityRepository, MeasurmentRepository $measurmentRepository, WeatherUtil $weatherUtil, string $name = null)
+    public function __construct(WeatherUtil $weatherUtil, string $name = null)
     {
-        $this->cityRepository = $cityRepository;
-        $this->measurmentRepository = $measurmentRepository;
         $this->weatherUtil = $weatherUtil;
 
-        parent::__constructor($name);
+        parent::__construct($name);
     }
 
     protected function configure(): void
@@ -41,11 +38,17 @@ class WeatherGetByCountryAndCityNameCommand extends Command
     {
         $countryName = $input->getArgument('countryName');
         $cityName = $input->getArgument('cityName');
-        $cityAndMeasurements = $this->weatherUtil->getWeatherForCountryAndCity($country_name, $city_name, $this->cityRepository, $this->measurementRepository);
+        $cityAndMeasurements = $this->weatherUtil->getWeatherForCountryAndCity($countryName, $cityName);
 
-        $output->writeln($cityAndMeasurements["measurements"]);
-
-        return Command::SUCCESS;
+        $output->writeln("Country: " . $cityAndMeasurements["city"]->getCountryName());
+        $output->writeln("City: " . $cityAndMeasurements["city"]->getCityName());
+        foreach($cityAndMeasurements["measurements"] as $measurement) {
+            $output->writeln("Date: " . json_encode($measurement->getDate()));
+            $output->writeln("Temperature: " . $measurement->getTemperature());
+            $output->writeln("Wind: " . $measurement->getWind());
+            $output->writeln("Cloudiness Level: " . $measurement->getCloudinessLevel());
+            $output->writeln("");
+        }
 
         return Command::SUCCESS;
     }

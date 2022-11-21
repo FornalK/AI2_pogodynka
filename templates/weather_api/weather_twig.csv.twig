@@ -1,0 +1,11 @@
+query,locationName,latitude,longitute,date,celsius,wind,cloudiness
+{% for measurement in measurements %}
+{{ locationName }},
+{{- location.getCityName() }},
+{{- location.latitude }},
+{{- location.longitude }},
+{{- measurement.date|date('Y-m-d') }},
+{{- measurement.getTemperature() }},
+{{- measurement.wind }},
+{{- measurement.getCloudinessLevel() }}
+{% endfor %}

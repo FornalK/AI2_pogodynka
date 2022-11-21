@@ -8,18 +8,24 @@ use App\Repository\MeasurmentRepository;
 
 class WeatherUtil
 {
-    public function getWeatherForCountryAndCity(string $country_name, 
-                                                string $city_name, 
-                                                CityRepository $cityRepository, 
-                                                MeasurmentRepository $measurementRepository): array {
-        $city = $cityRepository->findCityByCountryAndCityName($country_name, $city_name);
-        $result = $this->getWeatherForLocation($city, $measurementRepository);
+    private CityRepository $cityRepository;
+    private MeasurmentRepository $measurementRepository;
+
+    public function __construct(CityRepository $cityRepository, MeasurmentRepository $measurementRepository)
+    {
+        $this->cityRepository = $cityRepository;
+        $this->measurementRepository = $measurementRepository;
+    }
+
+    public function getWeatherForCountryAndCity(string $country_name, string $city_name): array {
+        $city = $this->cityRepository->findCityByCountryAndCityName($country_name, $city_name);
+        $result = $this->getWeatherForLocation($city);
         return $result;
     }
 
-    public function getWeatherForLocation(City $city, MeasurmentRepository $measurementRepository): array
+    public function getWeatherForLocation(City $city): array
     {
-        $measurements = $measurementRepository->findByCity($city);
+        $measurements = $this->measurementRepository->findByCity($city);
         $cityAndMeasurements = array(
             "city" => $city,
             "measurements" => $measurements

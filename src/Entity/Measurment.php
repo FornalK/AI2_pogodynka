@@ -94,4 +94,9 @@ class Measurment
 
         return $this;
     }
+
+    public function celsiusToFahrenheit(float $celsius): float
+    {
+        return $celsius * 1.8 + 32;
+    }
 }
